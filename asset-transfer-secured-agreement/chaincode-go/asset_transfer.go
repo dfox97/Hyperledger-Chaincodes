@@ -120,7 +120,7 @@ func (s *SmartContract) UpdateAsset(ctx contractapi.TransactionContextInterface,
 }
 
 // AgreeToSell adds seller's asking price to seller's implicit private data collection
-func (s *SmartContract) offerAccepted(ctx contractapi.TransactionContextInterface, assetID string) error {
+func (s *SmartContract) AgreeToSell(ctx contractapi.TransactionContextInterface, assetID string) error {
 	asset, err := s.ReadAsset(ctx, assetID)
 	if err != nil {
 		return err
@@ -141,7 +141,7 @@ func (s *SmartContract) offerAccepted(ctx contractapi.TransactionContextInterfac
 
 //revoke offer or agree
 // AgreeToBuy adds buyer's bid price to buyer's implicit private data collection
-func (s *SmartContract) makeOffer(ctx contractapi.TransactionContextInterface, assetID string) error {
+func (s *SmartContract) AgreeToBuy(ctx contractapi.TransactionContextInterface, assetID string) error {
 	return approvePrice(ctx, assetID, bidderPrice)
 }
 
@@ -184,7 +184,7 @@ func approvePrice(ctx contractapi.TransactionContextInterface, assetID string, p
 
 // VerifyAssetProperties  Allows a buyer to validate the properties of
 // an asset against the owner's implicit private data collection
-func (s *SmartContract) setInspection(ctx contractapi.TransactionContextInterface, assetID string) (bool, error) {
+func (s *SmartContract) SetInspection(ctx contractapi.TransactionContextInterface, assetID string) (bool, error) {
 	transMap, err := ctx.GetStub().GetTransient()
 	if err != nil {
 		return false, fmt.Errorf("error getting transient: %v", err)
@@ -260,12 +260,12 @@ func (s *SmartContract) TransferAsset(ctx contractapi.TransactionContextInterfac
 		return fmt.Errorf("failed to get asset: %v", err)
 	}
 
-	err = setApproval(ctx, asset, immutablePropertiesJSON, clientOrgID, buyerOrgID, priceJSON)
+	err = SetApproval(ctx, asset, immutablePropertiesJSON, clientOrgID, buyerOrgID, priceJSON)
 	if err != nil {
 		return fmt.Errorf("failed transfer verification: %v", err)
 	}
 
-	err = setTransferAssetState(ctx, asset, immutablePropertiesJSON, clientOrgID, buyerOrgID, agreement.Price)
+	err = SetTransferAssetState(ctx, asset, immutablePropertiesJSON, clientOrgID, buyerOrgID, agreement.Price)
 	if err != nil {
 		return fmt.Errorf("failed asset transfer: %v", err)
 	}
@@ -276,7 +276,7 @@ func (s *SmartContract) TransferAsset(ctx contractapi.TransactionContextInterfac
 
 // setApproval checks that client org currently owns asset and that both parties have agreed on price
 //immutablePropertiesJSON makes object unable to change
-func setApproval(ctx contractapi.TransactionContextInterface, asset *Asset, immutablePropertiesJSON []byte, clientOrgID string, buyerOrgID string, priceJSON []byte) error {
+func SetApproval(ctx contractapi.TransactionContextInterface, asset *Asset, immutablePropertiesJSON []byte, clientOrgID string, buyerOrgID string, priceJSON []byte) error {
 
 	// CHECK1: Auth check to ensure that client's org actually owns the asset
 
@@ -362,9 +362,9 @@ func setApproval(ctx contractapi.TransactionContextInterface, asset *Asset, immu
 	return nil
 }
 
-// setTransferAssetState performs the public and private state updates for the transferred asset
+// SetTransferAssetState performs the public and private state updates for the transferred asset
 //immutablePropertiesJSON makes object unable to change
-func setTransferAssetState(ctx contractapi.TransactionContextInterface, asset *Asset, immutablePropertiesJSON []byte, clientOrgID string, buyerOrgID string, price int) error {
+func SetTransferAssetState(ctx contractapi.TransactionContextInterface, asset *Asset, immutablePropertiesJSON []byte, clientOrgID string, buyerOrgID string, price int) error {
 
 	asset.OwnerOrg = buyerOrgID              //set the buyerorgid to the owner in the struct asset
 	updatedAsset, err := json.Marshal(asset) //Marshal JSON string from a data structure which will add to the asset structure.
