@@ -66,12 +66,12 @@ func (s *SmartContract) GetAssetPrivateProperties(ctx contractapi.TransactionCon
 
 // GetAssetSalesPrice returns the sales price
 func (s *SmartContract) GetAssetSalesPrice(ctx contractapi.TransactionContextInterface, assetID string) (string, error) {
-	return getAssetPrice(ctx, assetID, typeAssetForSale)
+	return getAssetPrice(ctx, assetID, sellerPrice)
 }
 
 // GetAssetBidPrice returns the bid price
 func (s *SmartContract) GetAssetBidPrice(ctx contractapi.TransactionContextInterface, assetID string) (string, error) {
-	return getAssetPrice(ctx, assetID, typeAssetBid)
+	return getAssetPrice(ctx, assetID, bidderPrice)
 }
 
 // getAssetPrice gets the bid or ask price from caller's implicit private data collection
@@ -98,14 +98,14 @@ func getAssetPrice(ctx contractapi.TransactionContextInterface, assetID string, 
 }
 
 // QueryAssetSaleAgreements returns all of an organization's proposed sales
-func (s *SmartContract) QueryAssetSaleAgreements(ctx contractapi.TransactionContextInterface) ([]Agreement, error) {
+/*func (s *SmartContract) QueryAssetSaleAgreements(ctx contractapi.TransactionContextInterface) ([]Agreement, error) {
 	return queryAgreementsByType(ctx, typeAssetForSale)
-}
+}*/
 
 // QueryAssetBuyAgreements returns all of an organization's proposed bids
-func (s *SmartContract) QueryAssetBuyAgreements(ctx contractapi.TransactionContextInterface) ([]Agreement, error) {
+/*func (s *SmartContract) QueryAssetBuyAgreements(ctx contractapi.TransactionContextInterface) ([]Agreement, error) {
 	return queryAgreementsByType(ctx, typeAssetBid)
-}
+}*/
 
 func queryAgreementsByType(ctx contractapi.TransactionContextInterface, agreeType string) ([]Agreement, error) {
 	collection, err := getClientImplicitCollectionName(ctx)
