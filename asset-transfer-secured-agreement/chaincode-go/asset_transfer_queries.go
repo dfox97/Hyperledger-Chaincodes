@@ -29,7 +29,7 @@ type Agreement struct {
 // ReadAsset returns the public asset data
 func (s *SmartContract) ReadAsset(ctx contractapi.TransactionContextInterface, assetID string) (*Asset, error) {
 	// Since only public data is accessed in this function, no access control is required
-	assetJSON, err := ctx.GetStub().GetState(assetID)
+	assetJSON, err := ctx.GetStub().GetState(assetID) //GET ledger data
 	if err != nil {
 		return nil, fmt.Errorf("failed to read from world state: %v", err)
 	}
@@ -38,7 +38,7 @@ func (s *SmartContract) ReadAsset(ctx contractapi.TransactionContextInterface, a
 	}
 
 	var asset *Asset
-	err = json.Unmarshal(assetJSON, &asset)
+	err = json.Unmarshal(assetJSON, &asset) //JSON data to go object data struct
 	if err != nil {
 		return nil, err
 	}
@@ -53,15 +53,15 @@ func (s *SmartContract) GetAssetPrivateProperties(ctx contractapi.TransactionCon
 		return "", err
 	}
 
-	immutableProperties, err := ctx.GetStub().GetPrivateData(collection, assetID)
+	privatePropertiesJSON, err := ctx.GetStub().GetPrivateData(collection, assetID)
 	if err != nil {
 		return "", fmt.Errorf("failed to read asset private properties from client org's collection: %v", err)
 	}
-	if immutableProperties == nil {
+	if privatePropertiesJSON == nil {
 		return "", fmt.Errorf("asset private details does not exist in client org's collection: %s", assetID)
 	}
 
-	return string(immutableProperties), nil
+	return string(privatePropertiesJSON), nil
 }
 
 // GetAssetSalesPrice returns the sales price
@@ -95,48 +95,6 @@ func getAssetPrice(ctx contractapi.TransactionContextInterface, assetID string, 
 	}
 
 	return string(price), nil
-}
-
-// QueryAssetSaleAgreements returns all of an organization's proposed sales
-/*func (s *SmartContract) QueryAssetSaleAgreements(ctx contractapi.TransactionContextInterface) ([]Agreement, error) {
-	return queryAgreementsByType(ctx, typeAssetForSale)
-}*/
-
-// QueryAssetBuyAgreements returns all of an organization's proposed bids
-/*func (s *SmartContract) QueryAssetBuyAgreements(ctx contractapi.TransactionContextInterface) ([]Agreement, error) {
-	return queryAgreementsByType(ctx, typeAssetBid)
-}*/
-
-func queryAgreementsByType(ctx contractapi.TransactionContextInterface, agreeType string) ([]Agreement, error) {
-	collection, err := getClientImplicitCollectionName(ctx)
-	if err != nil {
-		return nil, err
-	}
-
-	// Query for any object type starting with `agreeType`
-	agreementsIterator, err := ctx.GetStub().GetPrivateDataByPartialCompositeKey(collection, agreeType, []string{})
-	if err != nil {
-		return nil, fmt.Errorf("failed to read from private data collection: %v", err)
-	}
-	defer agreementsIterator.Close()
-
-	var agreements []Agreement
-	for agreementsIterator.HasNext() {
-		resp, err := agreementsIterator.Next()
-		if err != nil {
-			return nil, err
-		}
-
-		var agreement Agreement
-		err = json.Unmarshal(resp.Value, &agreement)
-		if err != nil {
-			return nil, err
-		}
-
-		agreements = append(agreements, agreement)
-	}
-
-	return agreements, nil
 }
 
 // QueryAssetHistory returns the chain of custody for a asset since issuance
