@@ -13,6 +13,16 @@ ReadAsset
 AssetExists
 TransferAsset
 GetAllAssets
+
+
+//NEED TO ADD ANOTHER ORG WHCIH INSPECTS AND APPROVES
+//func Inspection (ctx , assetID, clientOrgID){
+	check asset is owned by clientorgID
+	if asset is owned Set approval == true{
+		return
+	}
+}
+
 */
 package main
 

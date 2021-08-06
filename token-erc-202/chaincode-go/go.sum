@@ -50,9 +50,6 @@ github.com/hyperledger/fabric-contract-api-go v1.1.0/go.mod h1:nHWt0B45fK53owcFp
 github.com/hyperledger/fabric-protos-go v0.0.0-20190919234611-2a87503ac7c9/go.mod h1:xVYTjK4DtZRBxZ2D9aE4y6AbLaPwue2o/criQyQbVD0=
 github.com/hyperledger/fabric-protos-go v0.0.0-20200424173316-dd554ba3746e h1:9PS5iezHk/j7XriSlNuSQILyCOfcZ9wZ3/PiucmSE8E=
 github.com/hyperledger/fabric-protos-go v0.0.0-20200424173316-dd554ba3746e/go.mod h1:xVYTjK4DtZRBxZ2D9aE4y6AbLaPwue2o/criQyQbVD0=
-github.com/hyperledger/fabric-samples v2.3.0+incompatible h1:0PqcniqD+eH58S83GH5ksxgs7v30NFnoJksjE/qBj1s=
-github.com/hyperledger/fabric-samples/token-erc-20/chaincode-go v0.0.0-20210802173325-8890d49d19fe h1:6t0HWQuYn4FJTxF767nqj2r4AOeFdnJl3CF5brbq18o=
-github.com/hyperledger/fabric-samples/token-erc-20/chaincode-go v0.0.0-20210802173325-8890d49d19fe/go.mod h1:scYZ2tPdMiZeNks5oSIIMegqT4mzL/wTgzpH9QKokW0=
 github.com/inconshreveable/mousetrap v1.0.0/go.mod h1:PxqpIevigyE2G7u3NXJIT2ANytuPF1OarO4DADm73n8=
 github.com/joho/godotenv v1.3.0 h1:Zjp+RcGpHhGlrMbJzXTrZZPrWj+1vfm90La1wgB6Bhc=
 github.com/joho/godotenv v1.3.0/go.mod h1:7hK45KPybAkOC6peb+G5yklZfMxEjkZhHbwpqxOKXbg=
